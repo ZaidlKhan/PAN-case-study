@@ -119,14 +119,10 @@ Skill-Bridge addresses the "skills gap" problem — students and early-career pr
 
 | Layer | Technology | Why |
 |---|---|---|
-| **Framework** | Angular 20 (standalone components) | Signal-based reactivity, lazy-loaded routes, no NgModules |
-| **Language** | TypeScript (strict mode) | Type safety for data models and AI response parsing |
-| **Styling** | Tailwind CSS 4 | Utility-first, dark mode, no custom CSS |
-| **Charts** | Chart.js + ng2-charts | Radar chart on dashboard |
+| **Framework** | Angular 20 | Signal-based reactivity, lazy-loaded routes, no NgModules |
+| **Language** | TypeScript | Type safety for data models and AI response parsing |
 | **AI** | Google Gemini (`@google/genai` SDK) | `gemini-3-flash-preview` + Google Search grounding |
-| **State** | Angular Signals + localStorage | No external state library needed |
 | **Testing** | Karma + Jasmine | Angular's built-in test runner |
-| **Build** | Angular CLI + esbuild | Fast builds, tree-shaking |
 
 ---
 
