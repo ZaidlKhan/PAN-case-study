@@ -1,9 +1,9 @@
 # Skill-Bridge Career Navigator
 
-**Candidate Name:** Zaid  
+**Candidate Name:** Zaid Khan
 **Scenario Chosen:** #2 — Skill-Bridge Career Navigator  
-**Estimated Time Spent:** ~6 hours  
-**Video Demo:** _[YouTube link here]_
+**Estimated Time Spent:** ~5 hours  
+**Video Demo:** _[[YouTube link here]](https://www.youtube.com/watch?v=9ea0JYlwYCM)_
 
 ---
 
@@ -12,7 +12,7 @@
 ### Prerequisites
 - Node.js 18+
 - npm 9+
-- A Google Gemini API key ([get one free](https://aistudio.google.com/apikey))
+- A Google Gemini API key 
 
 ### Run Commands
 ```bash
@@ -23,7 +23,6 @@ npm install --legacy-peer-deps
 # Edit src/environments/environment.ts → geminiApiKey: 'YOUR_KEY'
 
 ng serve
-# Open http://localhost:4200
 ```
 
 ### Test Commands
@@ -37,33 +36,31 @@ npx ng test --no-watch --browsers=ChromeHeadless
 
 ## AI Disclosure
 
-- **Did you use an AI assistant?** Yes — GitHub Copilot for code generation, debugging, and boilerplate scaffolding.
-- **How did you verify the suggestions?** Every suggestion was reviewed for correctness against Angular 20 APIs, Gemini SDK docs, and Tailwind v4 syntax. AI-generated data structures were manually validated against the TypeScript interfaces. All AI outputs in the app itself are validated/sanitized before rendering (URL whitelisting, score clamping, section backfill).
-- **One example of a suggestion rejected or changed:** Copilot initially suggested a single Gemini API call for the Resume Scorer that combined analysis + Google Search grounding in one prompt. The model consistently skipped searching and hallucinated course URLs and LinkedIn profiles. I rejected this and split it into two separate calls — one for analysis (no search) and one dedicated to searching (with `googleSearch` tool) — which forced the model to actually use the search tool and return real URLs.
+- **Did you use an AI assistant?** Yes, GitHub Copilot for code generation, debugging, and writing test cases.
+- **How did you verify the suggestions?** Every suggestion was reviewed for correctness against Angular 20 APIs, Gemini SDK docs, and Tailwind v4 syntax. AI-generated data structures were manually validated against the TypeScript interfaces. All AI outputs in the app itself are validated/sanitized before rendering.
+- **One example of a suggestion rejected or changed:** Copilot initially suggested a single Gemini API call for the Resume Scorer that combined analysis + Google Search grounding in one prompt. The model consistently skipped searching and hallucinated course URLs and LinkedIn profiles. I rejected this and split it into two separate calls, one for analysis (no search) and one dedicated to searching, which forced the model to actually use the search tool and return real URLs.
 
 ---
 
 ## Tradeoffs & Prioritization
 
 ### What did you cut to stay within the time limit?
-- **No backend** — All logic runs client-side. The Gemini API key lives in the Angular environment file. Acceptable for a demo, not for production.
+- **No backend** — All logic runs client-side. 
 - **No user accounts / auth** — Profile is stored in localStorage only.
-- **No real LinkedIn data** — Career Path Explorer uses 49+ hand-crafted mock profiles instead of real scraped data.
+- **No real LinkedIn data** — Career Path Explorer uses mocked profiles instead of real scraped data.
 - **No PDF resume upload** — Only plain-text resume paste is supported.
 - **No cover letter generator or resume rewriter** — Identified as future features but cut for time.
 - **Removed Compare and Interview tabs** — Scoped down to 4 core features: Profile, Dashboard, Career Paths, Resume Scorer.
 
 ### What would you build next if you had more time?
-- Backend API proxy (Cloudflare Worker / Vercel Edge Function) to hold the API key server-side and cache AI responses
 - User accounts with a real database instead of localStorage
 - PDF resume upload with parsing
 - AI resume rewriter that rephrases bullet points to match job description language
 - Cover letter generator from profile + job description
-- Progress tracking — mark skills as "learned" and track improvement over time
+- Progress tracking: mark skills as "learned" and track improvement over time
 - Export gap analysis as PDF
 
 ### Known limitations
-- **API key in client bundle** — visible in browser DevTools. Production would need a backend proxy.
 - **localStorage ~5MB limit** — large resumes or many analyses could hit this.
 - **Google Search grounding quality varies** — some searches return fewer results; LinkedIn profile results depend on public profile availability.
 - **Mock career path data is static** — doesn't reflect real market trends.
@@ -184,29 +181,6 @@ Skill-Bridge addresses the "skills gap" problem — students and early-career pr
 | `GapAnalysisService` | 10 | Role selection, gap computation, 100% match, sorting, radar data |
 | `GeminiService` | 4 | Service creation, unconfigured guards, error handling |
 | **Total** | **29** | |
-
-### Happy Path Tests
-- Profile initializes empty, skills can be added/removed/updated, target role can be set
-- Gap analysis returns correct matched/missing skills, 100% match when all skills present
-- Must-have gaps are sorted by frequency descending
-- Radar data has correct shape when role is selected
-- Resume text persists across the profile
-
-### Edge Case Tests
-- Duplicate skills are rejected (keeps original proficiency)
-- Removing/updating a non-existent skill is a no-op
-- Invalid role ID returns null analysis and null radar data
-- Corrupted localStorage returns empty defaults
-- Partial localStorage data fills in missing fields with defaults
-- Empty resume text is handled gracefully
-- Gemini methods throw clear errors when no API key is configured
-
-### Run
-```bash
-npx ng test --no-watch --browsers=ChromeHeadless
-# TOTAL: 29 SUCCESS
-```
-
 ---
 
 ## AI Integration
